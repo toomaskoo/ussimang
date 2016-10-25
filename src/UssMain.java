@@ -75,30 +75,66 @@ public class UssMain extends Application  {
 
             ussike.setOnKeyReleased(
                     e -> {
-                        switch (e.getCode()) {
-                            case DOWN:
-                                up = false;
-                                left = false;
-                                right = false;
-                                down = true;
-                                break;
-                            case LEFT:
-                                up = false;
-                                down = false;
-                                right = false;
-                                left = true;
-                                break;
-                            case RIGHT:
-                                up = false;
-                                left = false;
-                                down = false;
-                                right = true;
-                                break;
-                            case UP:
-                                left = false;
-                                down = false;
-                                right = false;
-                                up = true;
+                        if(up){
+                            switch (e.getCode()) {
+                                case LEFT:
+                                    up = false;
+                                    down = false;
+                                    right = false;
+                                    left = true;
+                                    break;
+                                case RIGHT:
+                                    up = false;
+                                    left = false;
+                                    down = false;
+                                    right = true;
+                            }
+                        }
+                        if(down){
+                            switch (e.getCode()) {
+                                case LEFT:
+                                    up = false;
+                                    down = false;
+                                    right = false;
+                                    left = true;
+                                    break;
+                                case RIGHT:
+                                    up = false;
+                                    left = false;
+                                    down = false;
+                                    right = true;
+                                    break;
+                            }
+                        }
+                        if(right){
+                            switch (e.getCode()) {
+                                case UP:
+                                    left = false;
+                                    down = false;
+                                    right = false;
+                                    up = true;
+                                    break;
+                                case DOWN:
+                                    up = false;
+                                    left = false;
+                                    right = false;
+                                    down = true;
+                            }
+                        }
+                        if(left){
+                            switch (e.getCode()) {
+                                case UP:
+                                    left = false;
+                                    down = false;
+                                    right = false;
+                                    up = true;
+                                    break;
+                                case DOWN:
+                                    up = false;
+                                    left = false;
+                                    right = false;
+                                    down = true;
+                            }
                         }
                     }
             );
