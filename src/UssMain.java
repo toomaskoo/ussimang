@@ -42,10 +42,7 @@ public class UssMain extends Application  {
         ussike = new Circle(10);
         x = 10;
         y = 10;
-        up = false;
-        down = true;
-        left = false;
-        right = false;
+
         ussike.setFill(Color.RED);
         ussike.setCenterX(x);
         ussike.setCenterY(y);
@@ -53,14 +50,23 @@ public class UssMain extends Application  {
 
         primaryStage.show();
         ussike.requestFocus();
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                ussikeliigub();
+            }
+        }, 1000, 500);
+
         ussike.setOnKeyPressed(
                 event -> {
                     switch (event.getCode()) {
                         case UP:
-                            up = true;
                             left = false;
                             down = false;
                             right = false;
+                            up = true;
                     }
                 }
         );
@@ -69,9 +75,9 @@ public class UssMain extends Application  {
                     switch (event.getCode()) {
                         case LEFT:
                             up = false;
-                            left = true;
                             down = false;
                             right = false;
+                            left = true;
                     }
                 }
         );
@@ -81,8 +87,8 @@ public class UssMain extends Application  {
                         case DOWN:
                             up = false;
                             left = false;
-                            down = true;
                             right = false;
+                            down = true;
                     }
                 }
         );
@@ -97,16 +103,15 @@ public class UssMain extends Application  {
                     }
                 }
         );
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                ussikeliigub();
-            }
-        }, 1000, 1000);
+        up = false;
+        down = true;
+        left = false;
+        right = false;
+
     }
 
     private void ussikeliigub(){
+
         if(up){
             ussike.setCenterY(y);
             ussike.setCenterX(x);
