@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static javafx.scene.input.KeyCode.DOWN;
+
 
 /**
  * @author Toomas
@@ -40,8 +42,8 @@ public class UssMain extends Application  {
         primaryStage.setScene(rootScene);
         primaryStage.setResizable(false);
         ussike = new Circle(10);
-        x = 10;
-        y = 10;
+        x = 250;
+        y = 250;
 
         ussike.setFill(Color.RED);
         ussike.setCenterX(x);
@@ -52,62 +54,54 @@ public class UssMain extends Application  {
         ussike.requestFocus();
 
         timer = new Timer();
+        System.out.println(3);
+        Thread.sleep(1000);
+        System.out.println(2);
+        Thread.sleep(1000);
+        System.out.println(1);
+        Thread.sleep(1000);
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 ussikeliigub();
             }
-        }, 1000, 500);
+        }, 1, 500);
 
-        ussike.setOnKeyPressed(
-                event -> {
-                    switch (event.getCode()) {
-                        case UP:
-                            left = false;
-                            down = false;
-                            right = false;
-                            up = true;
-                    }
-                }
-        );
-        ussike.setOnKeyPressed(
-                event -> {
-                    switch (event.getCode()) {
-                        case LEFT:
-                            up = false;
-                            down = false;
-                            right = false;
-                            left = true;
-                    }
-                }
-        );
-        ussike.setOnKeyPressed(
-                event -> {
-                    switch (event.getCode()) {
-                        case DOWN:
-                            up = false;
-                            left = false;
-                            right = false;
-                            down = true;
-                    }
-                }
-        );
-        ussike.setOnKeyPressed(
-                event -> {
-                    switch (event.getCode()) {
-                        case RIGHT:
-                            up = false;
-                            left = false;
-                            down = false;
-                            right = true;
-                    }
-                }
-        );
         up = false;
         down = true;
         left = false;
         right = false;
 
+
+            ussike.setOnKeyReleased(
+                    e -> {
+                        switch (e.getCode()) {
+                            case DOWN:
+                                up = false;
+                                left = false;
+                                right = false;
+                                down = true;
+                                break;
+                            case LEFT:
+                                up = false;
+                                down = false;
+                                right = false;
+                                left = true;
+                                break;
+                            case RIGHT:
+                                up = false;
+                                left = false;
+                                down = false;
+                                right = true;
+                                break;
+                            case UP:
+                                left = false;
+                                down = false;
+                                right = false;
+                                up = true;
+                        }
+                    }
+            );
     }
 
     private void ussikeliigub(){
@@ -134,4 +128,5 @@ public class UssMain extends Application  {
             y = y+10;
         }
     }
+
 }
