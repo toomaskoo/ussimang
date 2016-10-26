@@ -7,14 +7,16 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.sql.*;
 
 /**
  * @author Toomas
  * @version 23/10/16
  */
-public class UssMain extends Application  {
+public class UssMain extends Application {
     private boolean up = false;//kui up=TRUE siis uss liigub üles
     private boolean left = false;//kui left=TRUE siis uss liigub vasakule
     private boolean down = true;//...
@@ -32,15 +34,40 @@ public class UssMain extends Application  {
     private int nomY = 200;//esimese nomnomi ordinaat
     private int countdownInt;//loenduri int väärtused
     private Text countdown;//loendur tekstina java FXis
-
+    private Connection conn = null;
+    private ArrayList<Integer> asukohtX = new ArrayList();
+    private ArrayList<Integer> asukohtY = new ArrayList();
+    private Circle ussisaba;
+    private Pane rootPane;
 
     public static void main(String[] args) {
         launch(args);
+
+        andmebaas test = new andmebaas();
+        ResultSet res;
+
+        try {
+            res = test.displayUsers();
+            while(res.next()){
+                System.out.println(res.getString("fname") + res.getString("score"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Pane rootPane = new Pane();//pea paneel(ilma layoutita)
+
+
+        rootPane = new Pane();//pea paneel(ilma layoutita)
         Scene rootScene = new Scene(rootPane, 500, 500);//500,500 suuruses ja stseenis on rootpane
         rootScene.setFill(Color.CYAN);//sest et miks mitte
         mangukast = new Rectangle(480, 450);//mänguala pole ruut, :O
@@ -55,6 +82,8 @@ public class UssMain extends Application  {
         ussike = new Circle(5);//woop we got a worm
         x = 250;//stardipositsiooni koordinaat
         y = 250;//stardipositsiooni ordinaat
+        asukohtX.add(x);
+        asukohtY.add(y);
 
         ussike.setFill(Color.RED);//lihtne jälgida? ya
         ussike.setCenterX(x);//et saaks X muuta ja liigutada ussi
@@ -81,6 +110,7 @@ public class UssMain extends Application  {
         countdown.setFont(Font.font(50));
         countdown.setX(225);
         countdown.setY(100);
+
 
         rootPane.getChildren().addAll(countdown, gameOver, counter, nomnom, ussike, mangukast);//kõik peab ikka ekraanile jääma
 
@@ -137,6 +167,8 @@ public class UssMain extends Application  {
                 }
         );
 
+
+
         timer = new Timer();//et hakkaks aega loendama
         //mängu animatsioon ja counter refresh iga 0,5 sek tagant
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -148,9 +180,10 @@ public class UssMain extends Application  {
                     timer.scheduleAtFixedRate(new TimerTask() {
                     @Override
                     public void run() {
-                            counter.setText(Integer.toString(counterInt));
-                            ussikeliigub();
-                            countdown.setFont(Font.font(0));
+                        counter.setText(Integer.toString(counterInt));
+                        ussikeliigub();
+                        countdown.setFont(Font.font(0));
+                        System.out.println(asukohtX +" : " + asukohtY);
                     }
                 } , 0, 200);
                 } else {
@@ -161,36 +194,54 @@ public class UssMain extends Application  {
             }
         }, 1000, 1000);
     }
+
+
+
     private void ussikeliigub(){//kõik mida ussike peab tegema kui ta liigub mingis suunas
 
         if(up){//ussike liigub üles
-            setCenter();
-            y = y-10;//iga kord kui 0,5 sek möödas, siis muudab ussi asukohta ja triggerib uuesti setCenterX ja Y
+            setCenter();//iga kord kui preset arv sek möödas, siis muudab ussi asukohta ja triggerib uuesti setCenterX ja Y
+            y= y-10;
+            asukohtY.set(counterInt, y-10);
+            asukohtX.set(counterInt, x);
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
                 counterInt++;//suurenda skoori
                 makenomnom();
+                asukohtX.add(x);
+                asukohtY.add(y);
+                rootPane.getChildren().add(new Circle(asukohtX.get(counterInt), asukohtY.get(counterInt), 5, Color.RED));
             }
-            if(y<=40){//kui lähed alast välja
+            if(y<=35){//kui lähed alast välja
                 gameOverJEE();
             }
         }
         if(left){
             setCenter();
-            x = x-10;
+            x=x-10;
+            asukohtY.set(counterInt,y);
+            asukohtX.set(counterInt, x-10);
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
+                asukohtX.add(x);
+                asukohtY.add(y);
+                rootPane.getChildren().add(new Circle(asukohtX.get(counterInt), asukohtY.get(counterInt), 5, Color.RED));
             }
-            if(x<=5){
+            if(x<=10){
                 gameOverJEE();
             }
         }
         if(right){
             setCenter();
-            x= x+10;
+            x=x+10;
+            asukohtY.set(counterInt,y);
+            asukohtX.set(counterInt, x+10);
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
+                asukohtX.add(x);
+                asukohtY.add(y);
+                rootPane.getChildren().add(new Circle(asukohtX.get(counterInt), asukohtY.get(counterInt), 5, Color.RED));
             }
             if(x>=495){
                 gameOverJEE();
@@ -200,10 +251,15 @@ public class UssMain extends Application  {
 
         if(down){
             setCenter();
-            y = y+10;
+            y=y+10;
+            asukohtY.set(counterInt, y+10);
+            asukohtX.set(counterInt, x);
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
+                asukohtX.add(x);
+                asukohtY.add(y);
+                rootPane.getChildren().add(new Circle(asukohtX.get(counterInt), asukohtY.get(counterInt), 5, Color.RED));
             }
             if(y>=495){
                 gameOverJEE();
@@ -235,9 +291,6 @@ public class UssMain extends Application  {
         down = false;
         right = false;
         left = false;
-    }
-    private void ussiSaba(){
-        //siia tuleb ussisaba genereerimise meetod
     }
     private void ussiSabaJalitaja(){
         //siia tuleb see kuidas ussisaba jälitab eelmist munakest
