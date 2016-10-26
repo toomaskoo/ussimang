@@ -1,6 +1,5 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
-
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -9,7 +8,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -67,6 +65,8 @@ public class UssMain extends Application  {
         ussike.setCenterY(y);
 
         nomnom = new Circle(5);
+        nomnom.setCenterX(nomX);
+        nomnom.setCenterY(nomY);
 
 
 
@@ -98,13 +98,12 @@ public class UssMain extends Application  {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                ussikeliigub();
                 counter.setText(Integer.toString(counterInt));
-                nomnom.setCenterX(nomX);
-                nomnom.setCenterY(nomY);
-
+                ussikeliigub();
             }
         }, 1, 500);
+
+
 
         up = false;
         down = true;
@@ -112,7 +111,7 @@ public class UssMain extends Application  {
         right = false;
 
 
-        // jälgib nuppude liigutusi, et
+        // jälgib nuppude liigutusi
         ussike.setOnKeyReleased(
                 e -> {
                     if (up) {
@@ -189,18 +188,21 @@ public class UssMain extends Application  {
             y = y-10;
             if(ussike.getCenterX() == nomnom.getCenterX() && ussike.getCenterY() == nomnom.getCenterX()){
                 counterInt++;
-                nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                /*nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
                 nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
                 while (nomX >=490 || nomX <= 10) {
                     nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
                 }
                 while(nomY >=490 || nomY <= 50) {
                     nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
-                }
-                
+                }*/
+                nomX = 100;
+                nomY = 100;
+                nomnom.setCenterX(nomX);
+                nomnom.setCenterY(nomY);
 
             }
-            if(y<=50){
+            if(y<=40){
                 gameOver.setFont(Font.font(30));
                 timer.cancel();
             }
@@ -211,8 +213,12 @@ public class UssMain extends Application  {
             x = x-10;
             if(ussike.getCenterX() == nomnom.getCenterX() && ussike.getCenterY() == nomnom.getCenterX()){
                 counterInt++;
+                nomX = 300;
+                nomY = 300;
+                nomnom.setCenterX(nomX);
+                nomnom.setCenterY(nomY);
             }
-            if(x<=10){
+            if(x<=5){
                 gameOver.setFont(Font.font(30));
                 timer.cancel();
             }
@@ -223,11 +229,16 @@ public class UssMain extends Application  {
             x= x+10;
             if(ussike.getCenterX() == nomnom.getCenterX() && ussike.getCenterY() == nomnom.getCenterX()){
                 counterInt++;
+                nomX = 250;
+                nomY = 250;
+                nomnom.setCenterX(nomX);
+                nomnom.setCenterY(nomY);
             }
-            if(x>=490){
+            if(x>=495){
                 gameOver.setFont(Font.font(30));
                 timer.cancel();
             }
+
         }
 
         if(down){
@@ -236,8 +247,12 @@ public class UssMain extends Application  {
             y = y+10;
             if(ussike.getCenterX() == nomnom.getCenterX() && ussike.getCenterY() == nomnom.getCenterX()){
                 counterInt++;
+                nomX = 400;
+                nomY = 100;
+                nomnom.setCenterX(nomX);
+                nomnom.setCenterY(nomY);
             }
-            if(y>=490){
+            if(y>=495){
                 gameOver.setFont(Font.font(30));
                 timer.cancel();
             }
