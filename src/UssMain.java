@@ -100,6 +100,7 @@ public class UssMain extends Application  {
             public void run() {
                 counter.setText(Integer.toString(counterInt));
                 ussikeliigub();
+
             }
         }, 1, 500);
 
@@ -186,21 +187,18 @@ public class UssMain extends Application  {
             ussike.setCenterY(y);
             ussike.setCenterX(x);
             y = y-10;
-            if(ussike.getCenterX() == nomnom.getCenterX() && ussike.getCenterY() == nomnom.getCenterX()){
+            if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
-                /*nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
                 nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
                 while (nomX >=490 || nomX <= 10) {
                     nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
                 }
                 while(nomY >=490 || nomY <= 50) {
                     nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
-                }*/
-                nomX = 100;
-                nomY = 100;
+                }
                 nomnom.setCenterX(nomX);
                 nomnom.setCenterY(nomY);
-
             }
             if(y<=40){
                 gameOver.setFont(Font.font(30));
@@ -211,10 +209,16 @@ public class UssMain extends Application  {
             ussike.setCenterY(y);
             ussike.setCenterX(x);
             x = x-10;
-            if(ussike.getCenterX() == nomnom.getCenterX() && ussike.getCenterY() == nomnom.getCenterX()){
+            if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
-                nomX = 300;
-                nomY = 300;
+                nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                while (nomX >=490 || nomX <= 10) {
+                    nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                }
+                while(nomY >=490 || nomY <= 50) {
+                    nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                }
                 nomnom.setCenterX(nomX);
                 nomnom.setCenterY(nomY);
             }
@@ -227,10 +231,16 @@ public class UssMain extends Application  {
             ussike.setCenterY(y);
             ussike.setCenterX(x);
             x= x+10;
-            if(ussike.getCenterX() == nomnom.getCenterX() && ussike.getCenterY() == nomnom.getCenterX()){
+            if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
-                nomX = 250;
-                nomY = 250;
+                nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                while (nomX >=490 || nomX <= 10) {
+                    nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                }
+                while(nomY >=490 || nomY <= 50) {
+                    nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                }
                 nomnom.setCenterX(nomX);
                 nomnom.setCenterY(nomY);
             }
@@ -245,10 +255,16 @@ public class UssMain extends Application  {
             ussike.setCenterY(y);
             ussike.setCenterX(x);
             y = y+10;
-            if(ussike.getCenterX() == nomnom.getCenterX() && ussike.getCenterY() == nomnom.getCenterX()){
+            if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
-                nomX = 400;
-                nomY = 100;
+                nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                while (nomX >=490 || nomX <= 10) {
+                    nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                }
+                while(nomY >=490 || nomY <= 50) {
+                    nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
+                }
                 nomnom.setCenterX(nomX);
                 nomnom.setCenterY(nomY);
             }
