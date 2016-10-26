@@ -32,6 +32,9 @@ public class UssMain extends Application  {
     private int counterInt = 0;//selleks, et loendada - algselt on int, mis muudetakse stringiks ekraanile
     private int nomX = 200;//esimese nomnomi koordinaat
     private int nomY = 200;//esimese nomnomi ordinaat
+    private int countdownInt;
+    private Text countdown;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -77,32 +80,17 @@ public class UssMain extends Application  {
         gameOver.setY(250);//kuhu see esile tõsta ordinaat
         gameOver.setFill(Color.RED);//punane
 
+        countdownInt = 3;
+        countdown = new Text(Integer.toString(countdownInt));
+        countdown.setFont(Font.font(50));
+        countdown.setX(225);
+        countdown.setY(100);
 
-        rootPane.getChildren().addAll(gameOver, counter, nomnom, ussike, mangukast);//kõik peab ikka ekraanile jääma
+        rootPane.getChildren().addAll(countdown, gameOver, counter, nomnom, ussike, mangukast);//kõik peab ikka ekraanile jääma
 
         primaryStage.show();//abraka dabra, kõike on näha
         ussike.requestFocus();//kontrolli ussi
 
-        timer = new Timer();//et hakkaks aega loendama
-
-        // easy way, kunagi tuleb ära fixida, et ekraanile kuvaks
-        System.out.println(3);
-        Thread.sleep(1000);
-        System.out.println(2);
-        Thread.sleep(1000);
-        System.out.println(1);
-        Thread.sleep(1000);
-
-        //mängu animatsioon ja counter refresh iga 0,5 sek tagant
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                counter.setText(Integer.toString(counterInt));
-                ussikeliigub();
-
-            }
-        }, 1, 500);
-        
         // jälgib nuppude liigutusi
         ussike.setOnKeyReleased(
                 e -> {
@@ -152,6 +140,32 @@ public class UssMain extends Application  {
                     }
                 }
         );
+
+        timer = new Timer();//et hakkaks aega loendama
+        //mängu animatsioon ja counter refresh iga 0,5 sek tagant
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if(countdownInt == 0){
+                    timer.cancel();
+                    timer = new Timer();
+                    timer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                            counter.setText(Integer.toString(counterInt));
+                            ussikeliigub();
+                            countdown.setFont(Font.font(0));
+                    }
+                } , 0, 200);
+                } else {
+                    countdownInt = countdownInt - 1;
+                    countdown.setText(Integer.toString(countdownInt));
+                }
+
+            }
+        }, 1000, 1000);
+
+
     }
     private void ussikeliigub(){//kõik mida ussike peab tegema kui ta liigub mingis suunas
 
@@ -227,5 +241,11 @@ public class UssMain extends Application  {
         down = false;
         right = false;
         left = false;
+    }
+    private void ussiSaba(){
+        //siia tuleb ussisaba genereerimise meetod
+    }
+    private void ussiSabaJalitaja(){
+        //siia tuleb see kuidas ussisaba jälitab eelmist munakest
     }
 }
