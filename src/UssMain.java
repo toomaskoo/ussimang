@@ -6,7 +6,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,23 +17,21 @@ import java.util.TimerTask;
  * @version 23/10/16
  */
 public class UssMain extends Application  {
-    boolean up;
-    boolean left;
-    boolean down;
-    boolean right;
-    Circle ussike;
-    int x;//ussi X kordinaat
-    int y;//ussi Y kordinaat
-    Timer timer;
-    Rectangle mangukast;
-    Circle nomnom;
-
-    Text gameOver;
-
-    Text counter;
-    int counterInt = 0;
-    int nomX = 200;
-    int nomY = 200;
+    private boolean up;//kui up=TRUE siis uss liigub üles
+    private boolean left;//kui left=TRUE siis uss liigub vasakule
+    private boolean down;//...
+    private boolean right;//...
+    private Circle ussike;//Ussike koosneb ringikujulistest lülidest
+    private int x;//ussi X kordinaat
+    private int y;//ussi Y kordinaat
+    private Timer timer;//timer, et mäng toimiks ja animeeruks
+    private Rectangle mangukast;//ala, mille vastu ei tohi minna uss
+    private Circle nomnom;//nomnom - eat that!
+    private Text gameOver;//SP
+    private Text counter;//loendab mitu nomnomi ussike on ära söönud
+    private int counterInt = 0;//selleks, et loendada - algselt on int, mis muudetakse stringiks ekraanile
+    private int nomX = 200;//esimese nomnomi koordinaat
+    private int nomY = 200;//esimese nomnomi ordinaat
 
     public static void main(String[] args) {
         launch(args);
@@ -42,59 +39,61 @@ public class UssMain extends Application  {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Pane rootPane = new Pane();
-        Scene rootScene = new Scene(rootPane, 500, 500);
-        rootPane.setMinSize(500, 500);
-        rootPane.setMaxSize(500, 500);
-        rootScene.setFill(Color.CYAN);
-        mangukast = new Rectangle(480, 450);
-        mangukast.setStroke(Color.LIGHTGRAY);
-        mangukast.setStrokeWidth(5);
-        mangukast.setFill(Color.TRANSPARENT);
-        mangukast.setTranslateX(10);
-        mangukast.setTranslateY(40);
+        Pane rootPane = new Pane();//pea paneel(ilma layoutita)
+        Scene rootScene = new Scene(rootPane, 500, 500);//500,500 suuruses ja stseenis on rootpane
+        rootScene.setFill(Color.CYAN);//sest et miks mitte
+        mangukast = new Rectangle(480, 450);//mänguala pole ruut, :O
+        mangukast.setStroke(Color.LIGHTGRAY);//et sa ikka näeks mänguala
+        mangukast.setStrokeWidth(5);//ka ilma prillideta
+        mangukast.setFill(Color.TRANSPARENT);//siis näed ka kastisisu
+        mangukast.setTranslateX(10);//paneme kasti X paika
+        mangukast.setTranslateY(40);//y paika
 
         primaryStage.setScene(rootScene);
-        primaryStage.setResizable(false);
-        ussike = new Circle(5);
-        x = 250;
-        y = 250;
+        primaryStage.setResizable(false);//EI TEE mänguala suuremaks!
+        ussike = new Circle(5);//woop we got a worm
+        x = 250;//stardipositsiooni koordinaat
+        y = 250;//stardipositsiooni ordinaat
 
-        ussike.setFill(Color.RED);
-        ussike.setCenterX(x);
-        ussike.setCenterY(y);
+        ussike.setFill(Color.RED);//lihtne jälgida? ya
+        ussike.setCenterX(x);//et saaks X muuta ja liigutada ussi
+        ussike.setCenterY(y);//et saaks Y muuta ja liigutada ussi
 
-        nomnom = new Circle(5);
-        nomnom.setCenterX(nomX);
-        nomnom.setCenterY(nomY);
-
-
-
-        counter = new Text();
-        counter.setFont(Font.font(20));
-        counter.setX(250);
-        counter.setY(25);
-        counter.setTextAlignment(TextAlignment.JUSTIFY);
-
-        gameOver = new Text("GAME OVER JEE");
-        gameOver.setFont(Font.font(0));
-        gameOver.setX(125);
-        gameOver.setY(250);
-        gameOver.setFill(Color.RED);
+        nomnom = new Circle(5); //nomnom söö ära
+        nomnom.setCenterX(nomX);//võta nomnom koordinaat
+        nomnom.setCenterY(nomY);//võta nomnom ordinaat
 
 
-        rootPane.getChildren().addAll(gameOver, counter, nomnom, ussike, mangukast);
 
-        primaryStage.show();
-        ussike.requestFocus();
+        counter = new Text();//loenda
+        counter.setFont(Font.font(20));//siis näed ka
+        counter.setX(250);//loenduri asukoha X
+        counter.setY(25);//loenduri asukoha Y
 
-        timer = new Timer();
+
+        gameOver = new Text("GAME OVER JEE");//said lutti
+        gameOver.setFont(Font.font(0));//alguses sa ei näe, et niikuinii saad kunagi lutti
+        gameOver.setX(125);//kuhu see esile tõsta koordinaat
+        gameOver.setY(250);//kuhu see esile tõsta ordinaat
+        gameOver.setFill(Color.RED);//punane
+
+
+        rootPane.getChildren().addAll(gameOver, counter, nomnom, ussike, mangukast);//kõik peab ikka ekraanile jääma
+
+        primaryStage.show();//abraka dabra, kõike on näha
+        ussike.requestFocus();//kontrolli ussi
+
+        timer = new Timer();//et hakkaks aega loendama
+
+        // easy way, kunagi tuleb ära fixida, et ekraanile kuvaks
         System.out.println(3);
         Thread.sleep(1000);
         System.out.println(2);
         Thread.sleep(1000);
         System.out.println(1);
         Thread.sleep(1000);
+
+        //mängu animatsioon ja counter refresh iga 0,5 sek tagant
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -105,7 +104,7 @@ public class UssMain extends Application  {
         }, 1, 500);
 
 
-
+        //kohe alguses liigub alla
         up = false;
         down = true;
         left = false;
@@ -116,7 +115,7 @@ public class UssMain extends Application  {
         ussike.setOnKeyReleased(
                 e -> {
                     if (up) {
-                        switch (e.getCode()) {
+                        switch (e.getCode()) {//kui liigub üles, siis saab pöörata ainult paremale ja vasakule
                             case LEFT:
                                 up = false;
                                 down = false;
@@ -131,7 +130,7 @@ public class UssMain extends Application  {
                         }
                     }
                     if (down) {
-                        switch (e.getCode()) {
+                        switch (e.getCode()) {//kui liigub alla siis saab pöörata ainult paremale ja vasakule
                             case LEFT:
                                 up = false;
                                 down = false;
@@ -143,11 +142,10 @@ public class UssMain extends Application  {
                                 left = false;
                                 down = false;
                                 right = true;
-                                break;
                         }
                     }
                     if (right) {
-                        switch (e.getCode()) {
+                        switch (e.getCode()) {//kui liigub paremale, siis saab pöörata üles ja alla
                             case UP:
                                 left = false;
                                 down = false;
@@ -162,7 +160,7 @@ public class UssMain extends Application  {
                         }
                     }
                     if (left) {
-                        switch (e.getCode()) {
+                        switch (e.getCode()) {//kui liigub vasakule, siis saab pöörata üles ja alla
                             case UP:
                                 left = false;
                                 down = false;
@@ -181,28 +179,28 @@ public class UssMain extends Application  {
     }
 
 
-    private void ussikeliigub(){
+    private void ussikeliigub(){//kõik mida ussike peab tegema kui ta liigub mingis suunas
 
-        if(up){
+        if(up){//ussike liigub üles
             ussike.setCenterY(y);
             ussike.setCenterX(x);
-            y = y-10;
-            if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
-                counterInt++;
-                nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
-                nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
-                while (nomX >=490 || nomX <= 10) {
+            y = y-10;//iga kord kui 0,5 sek möödas, siis muudab ussi asukohta ja triggerib uuesti setCenterX ja Y
+            if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
+                counterInt++;//suurenda skoori
+                nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);//niimoodi kalkuleerib arvu vahemikus 10-500
+                nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);//niimoodi kalkuleerib arvu vahemikus 10-500
+                while (nomX >=490 || nomX <= 10) {//jälgib, et arv jääks mänguruumi alasse
                     nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
                 }
-                while(nomY >=490 || nomY <= 50) {
+                while(nomY >=490 || nomY <= 50) {//jälgib, et arv jääks mänguruumi alasse
                     nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
                 }
-                nomnom.setCenterX(nomX);
-                nomnom.setCenterY(nomY);
+                nomnom.setCenterX(nomX);//võta nomnomile uus nomX
+                nomnom.setCenterY(nomY);//võta nomnomile uus nomY
             }
-            if(y<=40){
-                gameOver.setFont(Font.font(30));
-                timer.cancel();
+            if(y<=40){//kui lähed alast välja
+                gameOver.setFont(Font.font(30));//gameover yeee
+                timer.cancel();//mäng läbi, enam pole animatsiooni
             }
         }
         if(left){
