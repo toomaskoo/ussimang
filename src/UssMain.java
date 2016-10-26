@@ -10,8 +10,6 @@ import javafx.stage.Stage;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
-
 /**
  * @author Toomas
  * @version 23/10/16
@@ -32,8 +30,8 @@ public class UssMain extends Application  {
     private int counterInt = 0;//selleks, et loendada - algselt on int, mis muudetakse stringiks ekraanile
     private int nomX = 200;//esimese nomnomi koordinaat
     private int nomY = 200;//esimese nomnomi ordinaat
-    private int countdownInt;
-    private Text countdown;
+    private int countdownInt;//loenduri int väärtused
+    private Text countdown;//loendur tekstina java FXis
 
 
     public static void main(String[] args) {
@@ -65,8 +63,6 @@ public class UssMain extends Application  {
         nomnom = new Circle(5); //nomnom söö ära
         nomnom.setCenterX(nomX);//võta nomnom koordinaat
         nomnom.setCenterY(nomY);//võta nomnom ordinaat
-
-
 
         counter = new Text();//loenda
         counter.setFont(Font.font(20));//siis näed ka
@@ -164,8 +160,6 @@ public class UssMain extends Application  {
 
             }
         }, 1000, 1000);
-
-
     }
     private void ussikeliigub(){//kõik mida ussike peab tegema kui ta liigub mingis suunas
 
