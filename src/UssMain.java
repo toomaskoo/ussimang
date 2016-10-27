@@ -8,7 +8,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.sql.*;
@@ -22,9 +21,9 @@ public class UssMain extends Application {
     private boolean left = false;//kui left=TRUE siis uss liigub vasakule
     private boolean down = true;//...
     private boolean right = false;//...
-    private Circle ussike;//Ussike koosneb ringikujulistest lülidest
     private int x;//ussi X kordinaat
     private int y;//ussi Y kordinaat
+    private Circle[] ussike = new Circle[500];//Ussike koosneb ringikujulistest lülidest
     private Timer timer;//timer, et mäng toimiks ja animeeruks
     private Rectangle mangukast;//ala, mille vastu ei tohi minna uss
     private Circle nomnom;//nomnom - eat that!
@@ -38,8 +37,8 @@ public class UssMain extends Application {
     private Connection conn = null;
     private ArrayList<Integer> asukohtX = new ArrayList();
     private ArrayList<Integer> asukohtY = new ArrayList();
-    private Circle ussisaba;
     private Pane rootPane;
+
 
 
     public static void main(String[] args) {
@@ -81,19 +80,14 @@ public class UssMain extends Application {
 
         primaryStage.setScene(rootScene);
         primaryStage.setResizable(false);//EI TEE mänguala suuremaks!
-        ussike = new Circle(5);//woop we got a worm
+
         x = 250;//stardipositsiooni koordinaat
         y = 250;//stardipositsiooni ordinaat
+        ussike[0] = new Circle(x, y, 5, Color.RED);//woop we got a worm
         asukohtX.add(x);
         asukohtY.add(y);
 
-        ussike.setFill(Color.RED);//lihtne jälgida? ya
-        ussike.setCenterX(x);//et saaks X muuta ja liigutada ussi
-        ussike.setCenterY(y);//et saaks Y muuta ja liigutada ussi
-
-        nomnom = new Circle(5); //nomnom söö ära
-        nomnom.setCenterX(nomX);//võta nomnom koordinaat
-        nomnom.setCenterY(nomY);//võta nomnom ordinaat
+        nomnom = new Circle(nomX, nomY, 5, Color.GREEN); //nomnom söö ära
 
         counter = new Text();//loenda
         counter.setFont(Font.font(20));//siis näed ka
@@ -114,13 +108,13 @@ public class UssMain extends Application {
         countdown.setY(100);
 
 
-        rootPane.getChildren().addAll(countdown, gameOver, counter, nomnom, ussike, mangukast);//kõik peab ikka ekraanile jääma
+        rootPane.getChildren().addAll(countdown, gameOver, counter, nomnom,ussike[0], mangukast);//kõik peab ikka ekraanile jääma
 
         primaryStage.show();//abraka dabra, kõike on näha
-        ussike.requestFocus();//kontrolli ussi
+        ussike[0].requestFocus();//kontrolli ussi
 
         // jälgib nuppude liigutusi
-        ussike.setOnKeyReleased(
+        ussike[0].setOnKeyReleased(
                 e -> {
                     if (up) {
                         switch (e.getCode()) {//kui liigub üles, siis saab pöörata ainult paremale ja vasakule
@@ -206,13 +200,15 @@ public class UssMain extends Application {
             y= y-10;
             asukohtX.add(x);
             asukohtY.add(y-10);
-            if (counterInt <= asukohtX.size()){
+            if (counterInt+2 <= asukohtX.size()){
                 asukohtX.remove(0);
                 asukohtY.remove(0);
             }
-            if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
+            if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
                 counterInt++;//suurenda skoori
                 makenomnom();
+
+
 
             }
             if(y<=35){//kui lähed alast välja
@@ -224,11 +220,11 @@ public class UssMain extends Application {
             x=x-10;
             asukohtX.add(x-10);
             asukohtY.add(y);
-            if (counterInt <= asukohtX.size()){
+            if (counterInt+2 <= asukohtX.size()){
                 asukohtX.remove(0);
                 asukohtY.remove(0);
             }
-            if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
+            if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
             }
@@ -241,14 +237,13 @@ public class UssMain extends Application {
             x=x+10;
             asukohtX.add(x+10);
             asukohtY.add(y);
-            if (counterInt <= asukohtX.size()){
+            if (counterInt+2 <= asukohtX.size()){
                 asukohtX.remove(0);
                 asukohtY.remove(0);
             }
-            if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
+            if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
-
             }
             if(x>=495){
                 gameOverJEE();
@@ -261,14 +256,13 @@ public class UssMain extends Application {
             y=y+10;
             asukohtX.add(x);
             asukohtY.add(y+10);
-            if (counterInt <= asukohtX.size()){
+            if (counterInt+2 <= asukohtX.size()){
                 asukohtX.remove(0);
                 asukohtY.remove(0);
             }
-            if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
+            if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
-
             }
             if(y>=495){
                 gameOverJEE();
@@ -288,8 +282,9 @@ public class UssMain extends Application {
         nomnom.setCenterY(nomY);//võta nomnomile uus nomY
     }
     private void setCenter(){//lühendada koodi
-        ussike.setCenterY(y);
-        ussike.setCenterX(x);
+        ussike[0].setCenterY(y);
+        ussike[0].setCenterX(x);
+
     }
     private void gameOverJEE(){//lühendada koodi
         gameOver.setFont(Font.font(30));//gameover yeee
@@ -301,7 +296,7 @@ public class UssMain extends Application {
         right = false;
         left = false;
     }
-    private void ussiSabaJalitaja(){
-        //siia tuleb see kuidas ussisaba jälitab eelmist munakest
+    private final void ussiSaba(){
+
     }
 }
