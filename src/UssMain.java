@@ -8,6 +8,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.sql.*;
@@ -39,6 +40,8 @@ public class UssMain extends Application {
     private ArrayList<Integer> asukohtY = new ArrayList();
     private Circle ussisaba;
     private Pane rootPane;
+    private int[] locX = new int[counterInt];
+    private int[] locY = new int[counterInt];
 
     public static void main(String[] args) {
         launch(args);
@@ -183,7 +186,7 @@ public class UssMain extends Application {
                         counter.setText(Integer.toString(counterInt));
                         ussikeliigub();
                         countdown.setFont(Font.font(0));
-                        System.out.println(asukohtX +" : " + asukohtY);
+                        System.out.println(Arrays.toString(locX)+Arrays.toString(locY));
                     }
                 } , 0, 200);
                 } else {
@@ -202,14 +205,13 @@ public class UssMain extends Application {
         if(up){//ussike liigub üles
             setCenter();//iga kord kui preset arv sek möödas, siis muudab ussi asukohta ja triggerib uuesti setCenterX ja Y
             y= y-10;
-            asukohtY.set(counterInt, y-10);
-            asukohtX.set(counterInt, x);
+            locX[counterInt] = x;
+            locY[counterInt] = y-10;
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
                 counterInt++;//suurenda skoori
                 makenomnom();
-                asukohtX.add(x);
-                asukohtY.add(y);
-                rootPane.getChildren().add(new Circle(asukohtX.get(counterInt), asukohtY.get(counterInt), 5, Color.RED));
+                locX[counterInt] = x;
+                locY[counterInt] = y;
             }
             if(y<=35){//kui lähed alast välja
                 gameOverJEE();
@@ -218,14 +220,13 @@ public class UssMain extends Application {
         if(left){
             setCenter();
             x=x-10;
-            asukohtY.set(counterInt,y);
-            asukohtX.set(counterInt, x-10);
+            locX[counterInt] = x-10;
+            locY[counterInt] = y;
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
-                asukohtX.add(x);
-                asukohtY.add(y);
-                rootPane.getChildren().add(new Circle(asukohtX.get(counterInt), asukohtY.get(counterInt), 5, Color.RED));
+                locX[counterInt] = x;
+                locY[counterInt] = y;
             }
             if(x<=10){
                 gameOverJEE();
@@ -234,14 +235,13 @@ public class UssMain extends Application {
         if(right){
             setCenter();
             x=x+10;
-            asukohtY.set(counterInt,y);
-            asukohtX.set(counterInt, x+10);
+            locX[counterInt] = x+10;
+            locY[counterInt] = y;
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
-                asukohtX.add(x);
-                asukohtY.add(y);
-                rootPane.getChildren().add(new Circle(asukohtX.get(counterInt), asukohtY.get(counterInt), 5, Color.RED));
+                locX[counterInt] = x;
+                locY[counterInt] = y;
             }
             if(x>=495){
                 gameOverJEE();
@@ -252,14 +252,13 @@ public class UssMain extends Application {
         if(down){
             setCenter();
             y=y+10;
-            asukohtY.set(counterInt, y+10);
-            asukohtX.set(counterInt, x);
+            locX[counterInt] = x;
+            locY[counterInt] = y+10;
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
-                asukohtX.add(x);
-                asukohtY.add(y);
-                rootPane.getChildren().add(new Circle(asukohtX.get(counterInt), asukohtY.get(counterInt), 5, Color.RED));
+                locX[counterInt] = x;
+                locY[counterInt] = y;
             }
             if(y>=495){
                 gameOverJEE();
