@@ -40,8 +40,7 @@ public class UssMain extends Application {
     private ArrayList<Integer> asukohtY = new ArrayList();
     private Circle ussisaba;
     private Pane rootPane;
-    private int[] locX = new int[counterInt];
-    private int[] locY = new int[counterInt];
+
 
     public static void main(String[] args) {
         launch(args);
@@ -186,7 +185,7 @@ public class UssMain extends Application {
                         counter.setText(Integer.toString(counterInt));
                         ussikeliigub();
                         countdown.setFont(Font.font(0));
-                        System.out.println(Arrays.toString(locX)+Arrays.toString(locY));
+                        System.out.println(asukohtX + " : " + asukohtY);
                     }
                 } , 0, 200);
                 } else {
@@ -205,13 +204,16 @@ public class UssMain extends Application {
         if(up){//ussike liigub üles
             setCenter();//iga kord kui preset arv sek möödas, siis muudab ussi asukohta ja triggerib uuesti setCenterX ja Y
             y= y-10;
-            locX[counterInt] = x;
-            locY[counterInt] = y-10;
+            asukohtX.add(x);
+            asukohtY.add(y-10);
+            if (counterInt <= asukohtX.size()){
+                asukohtX.remove(0);
+                asukohtY.remove(0);
+            }
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
                 counterInt++;//suurenda skoori
                 makenomnom();
-                locX[counterInt] = x;
-                locY[counterInt] = y;
+
             }
             if(y<=35){//kui lähed alast välja
                 gameOverJEE();
@@ -220,13 +222,15 @@ public class UssMain extends Application {
         if(left){
             setCenter();
             x=x-10;
-            locX[counterInt] = x-10;
-            locY[counterInt] = y;
+            asukohtX.add(x-10);
+            asukohtY.add(y);
+            if (counterInt <= asukohtX.size()){
+                asukohtX.remove(0);
+                asukohtY.remove(0);
+            }
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
-                locX[counterInt] = x;
-                locY[counterInt] = y;
             }
             if(x<=10){
                 gameOverJEE();
@@ -235,13 +239,16 @@ public class UssMain extends Application {
         if(right){
             setCenter();
             x=x+10;
-            locX[counterInt] = x+10;
-            locY[counterInt] = y;
+            asukohtX.add(x+10);
+            asukohtY.add(y);
+            if (counterInt <= asukohtX.size()){
+                asukohtX.remove(0);
+                asukohtY.remove(0);
+            }
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
-                locX[counterInt] = x;
-                locY[counterInt] = y;
+
             }
             if(x>=495){
                 gameOverJEE();
@@ -252,13 +259,16 @@ public class UssMain extends Application {
         if(down){
             setCenter();
             y=y+10;
-            locX[counterInt] = x;
-            locY[counterInt] = y+10;
+            asukohtX.add(x);
+            asukohtY.add(y+10);
+            if (counterInt <= asukohtX.size()){
+                asukohtX.remove(0);
+                asukohtY.remove(0);
+            }
             if(ussike.getCenterX() == nomX && ussike.getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
-                locX[counterInt] = x;
-                locY[counterInt] = y;
+
             }
             if(y>=495){
                 gameOverJEE();
