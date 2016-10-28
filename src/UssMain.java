@@ -38,7 +38,7 @@ public class UssMain extends Application {
     private ArrayList<Integer> asukohtX = new ArrayList();
     private ArrayList<Integer> asukohtY = new ArrayList();
     private Pane rootPane;
-
+    private String[] test = new String[20];
 
 
     public static void main(String[] args) {
@@ -84,8 +84,6 @@ public class UssMain extends Application {
         x = 250;//stardipositsiooni koordinaat
         y = 250;//stardipositsiooni ordinaat
         ussike[0] = new Circle(x, y, 5, Color.RED);//woop we got a worm
-        asukohtX.add(x);
-        asukohtY.add(y);
 
         nomnom = new Circle(nomX, nomY, 5, Color.GREEN); //nomnom söö ära
 
@@ -108,7 +106,7 @@ public class UssMain extends Application {
         countdown.setY(100);
 
 
-        rootPane.getChildren().addAll(countdown, gameOver, counter, nomnom,ussike[0], mangukast);//kõik peab ikka ekraanile jääma
+        rootPane.getChildren().addAll(countdown, gameOver, counter, nomnom, ussike[0], mangukast);//kõik peab ikka ekraanile jääma
 
         primaryStage.show();//abraka dabra, kõike on näha
         ussike[0].requestFocus();//kontrolli ussi
@@ -180,6 +178,16 @@ public class UssMain extends Application {
                         ussikeliigub();
                         countdown.setFont(Font.font(0));
                         System.out.println(asukohtX + " : " + asukohtY);
+<<<<<<< HEAD
+                        if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
+                            counterInt++;//suurenda skoori
+                            makenomnom();
+=======
+                        if (counterInt+1 <= asukohtX.size()){
+                            asukohtX.remove(0);
+                            asukohtY.remove(0);
+>>>>>>> 18da3f290af06161f2e910e69532bf9019d95427
+                        }
                     }
                 } , 0, 200);
                 } else {
@@ -200,16 +208,9 @@ public class UssMain extends Application {
             y= y-10;
             asukohtX.add(x);
             asukohtY.add(y-10);
-            if (counterInt+2 <= asukohtX.size()){
-                asukohtX.remove(0);
-                asukohtY.remove(0);
-            }
             if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
                 counterInt++;//suurenda skoori
                 makenomnom();
-
-
-
             }
             if(y<=35){//kui lähed alast välja
                 gameOverJEE();
@@ -220,10 +221,6 @@ public class UssMain extends Application {
             x=x-10;
             asukohtX.add(x-10);
             asukohtY.add(y);
-            if (counterInt+2 <= asukohtX.size()){
-                asukohtX.remove(0);
-                asukohtY.remove(0);
-            }
             if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
@@ -237,10 +234,6 @@ public class UssMain extends Application {
             x=x+10;
             asukohtX.add(x+10);
             asukohtY.add(y);
-            if (counterInt+2 <= asukohtX.size()){
-                asukohtX.remove(0);
-                asukohtY.remove(0);
-            }
             if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
@@ -256,13 +249,10 @@ public class UssMain extends Application {
             y=y+10;
             asukohtX.add(x);
             asukohtY.add(y+10);
-            if (counterInt+2 <= asukohtX.size()){
-                asukohtX.remove(0);
-                asukohtY.remove(0);
-            }
             if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
+                ussiSaba();
             }
             if(y>=495){
                 gameOverJEE();
@@ -282,9 +272,8 @@ public class UssMain extends Application {
         nomnom.setCenterY(nomY);//võta nomnomile uus nomY
     }
     private void setCenter(){//lühendada koodi
-        ussike[0].setCenterY(y);
         ussike[0].setCenterX(x);
-
+        ussike[0].setCenterY(y);
     }
     private void gameOverJEE(){//lühendada koodi
         gameOver.setFont(Font.font(30));//gameover yeee
@@ -297,6 +286,6 @@ public class UssMain extends Application {
         left = false;
     }
     private final void ussiSaba(){
-
+       
     }
 }
