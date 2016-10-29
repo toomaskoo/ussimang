@@ -1,5 +1,7 @@
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -12,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.sql.*;
-
-import static javafx.application.Platform.runLater;
 
 /**
  * @author Toomas
@@ -33,8 +33,8 @@ public class UssMain extends Application {
     private Text gameOver;//SP
     private Text counter;//loendab mitu nomnomi ussike on ära söönud
     private int counterInt = 0;//selleks, et loendada - algselt on int, mis muudetakse stringiks ekraanile
-    private int nomX = 200;//esimese nomnomi koordinaat
-    private int nomY = 200;//esimese nomnomi ordinaat
+    private int nomX = 250;//esimese nomnomi koordinaat
+    private int nomY = 250;//esimese nomnomi ordinaat
     private int countdownInt;//loenduri int väärtused
     private Text countdown;//loendur tekstina java FXis
     private Connection conn = null;
@@ -42,9 +42,9 @@ public class UssMain extends Application {
     private ArrayList<Integer> asukohtY = new ArrayList();
     private Pane rootPane;
     private String[] test = new String[20];
-    int whilecounter;
-    int ussilylid = 0;
-
+    int ussilylid = 1;
+    int i = 0;
+    private AnimationTimer aeg;
 
     public static void main(String[] args) {
         launch(args);
@@ -85,7 +85,7 @@ public class UssMain extends Application {
         y = 250;//stardipositsiooni ordinaat
         ussike[0] = new Circle(x, y, 5, Color.RED);//woop we got a worm
 
-        nomnom = new Circle(nomX, nomY, 5, Color.GREEN); //nomnom söö ära
+        nomnom = new Circle(nomX, nomY, 5, Color.CHOCOLATE); //nomnom söö ära
 
         counter = new Text();//loenda
         counter.setFont(Font.font(20));//siis näed ka
@@ -112,7 +112,7 @@ public class UssMain extends Application {
         ussike[0].requestFocus();//kontrolli ussi
 
         // jälgib nuppude liigutusi
-        ussike[0].setOnKeyReleased(
+        ussike[0].setOnKeyPressed(
                 e -> {
                     if (up) {
                         switch (e.getCode()) {//kui liigub üles, siis saab pöörata ainult paremale ja vasakule
@@ -161,7 +161,7 @@ public class UssMain extends Application {
                 }
         );
 
-
+/*
         timer = new Timer();//et hakkaks aega loendama
         //mängu animatsioon ja counter refresh iga 0,5 sek tagant
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -181,6 +181,7 @@ public class UssMain extends Application {
                         if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY) {//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
                             counterInt++;//suurenda skoori
                             makenomnom();
+
                         }
                         if (counterInt <= asukohtX.size()){
                             asukohtX.remove(0);
@@ -195,6 +196,42 @@ public class UssMain extends Application {
 
             }
         }, 1000, 1000);
+*/
+
+        aeg = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                counter.setText(Integer.toString(counterInt));
+                ussikeliigub();
+                countdown.setFont(Font.font(0));
+                System.out.println(asukohtX + " : " + asukohtY);
+                for (ussilylid = 1; ussilylid <= counterInt; ussilylid++) {
+                    ussike[0] = new Circle(x, y, 5, Color.RED);
+                    ussike[ussilylid] = new Circle(asukohtX.get(0), asukohtY.get(0), 5, Color.GREEN);
+                    rootPane.getChildren().add(ussike[counterInt]);
+
+                }
+                if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY) {//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
+                    counterInt++;//suurenda skoori
+                    makenomnom();
+
+                    //ussike[1] = new Circle(asukohtX.get(0), asukohtY.get(0), 5, Color.GREEN);
+                    //rootPane.getChildren().removeAll(countdown, gameOver, counter, nomnom, ussike[0], mangukast);
+                    //rootPane.getChildren().addAll(countdown, gameOver, counter, nomnom, ussike[1], ussike[0], mangukast);
+                }
+                if (counterInt <= asukohtX.size()){
+                    asukohtX.remove(0);
+                    asukohtY.remove(0);
+                }
+                rootPane.getChildren().removeAll();
+
+            }
+
+
+
+
+    };
+    aeg.start();
 
     }
 
@@ -211,16 +248,6 @@ public class UssMain extends Application {
             if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
                 counterInt++;//suurenda skoori
                 makenomnom();
-                if(ussilylid < counterInt) {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            ussike[counterInt] = new Circle(asukohtX.get(counterInt - 1), asukohtY.get(counterInt - 1), 5, Color.GREEN);
-                            rootPane.getChildren().add(ussike[counterInt]);
-                        }
-                    });
-                    ussilylid++;
-                }
             }
             if(y<=40){//kui lähed alast välja
                 gameOverJEE();
@@ -283,11 +310,10 @@ public class UssMain extends Application {
     private void setCenter(){//lühendada koodi
         ussike[0].setCenterX(x);
         ussike[0].setCenterY(y);
-        whilecounter = 0;
     }
     private void gameOverJEE(){//lühendada koodi
         gameOver.setFont(Font.font(30));//gameover yeee
-        timer.cancel();//mäng läbi, enam pole animatsiooni
+        aeg.stop();//mäng läbi, enam pole animatsiooni
     }
     private void allDirectionsFalse(){//ükskõik mis noolt vajutada, kõigepealt paneb kõik falseks ja kohe peale seda muudab ühe suuna trueks
         up = false;
