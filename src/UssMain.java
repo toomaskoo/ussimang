@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -12,10 +13,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.sql.*;
 
+import static javafx.application.Platform.runLater;
+
 /**
  * @author Toomas
  * @version 23/10/16
- */
+*/
 public class UssMain extends Application {
     private boolean up = false;//kui up=TRUE siis uss liigub üles
     private boolean left = false;//kui left=TRUE siis uss liigub vasakule
@@ -39,6 +42,8 @@ public class UssMain extends Application {
     private ArrayList<Integer> asukohtY = new ArrayList();
     private Pane rootPane;
     private String[] test = new String[20];
+    int whilecounter;
+    int ussilylid = 0;
 
 
     public static void main(String[] args) {
@@ -57,11 +62,6 @@ public class UssMain extends Application {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-
-
-
-
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -70,9 +70,9 @@ public class UssMain extends Application {
 
         rootPane = new Pane();//pea paneel(ilma layoutita)
         Scene rootScene = new Scene(rootPane, 500, 500);//500,500 suuruses ja stseenis on rootpane
-        rootScene.setFill(Color.CYAN);//sest et miks mitte
+        rootScene.setFill(Color.LIGHTGRAY);//sest et miks mitte
         mangukast = new Rectangle(480, 450);//mänguala pole ruut, :O
-        mangukast.setStroke(Color.LIGHTGRAY);//et sa ikka näeks mänguala
+        mangukast.setStroke(Color.DARKGRAY);//et sa ikka näeks mänguala
         mangukast.setStrokeWidth(5);//ka ilma prillideta
         mangukast.setFill(Color.TRANSPARENT);//siis näed ka kastisisu
         mangukast.setTranslateX(10);//paneme kasti X paika
@@ -162,7 +162,6 @@ public class UssMain extends Application {
         );
 
 
-
         timer = new Timer();//et hakkaks aega loendama
         //mängu animatsioon ja counter refresh iga 0,5 sek tagant
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -178,15 +177,14 @@ public class UssMain extends Application {
                         ussikeliigub();
                         countdown.setFont(Font.font(0));
                         System.out.println(asukohtX + " : " + asukohtY);
-<<<<<<< HEAD
-                        if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
+
+                        if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY) {//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
                             counterInt++;//suurenda skoori
                             makenomnom();
-=======
-                        if (counterInt+1 <= asukohtX.size()){
+                        }
+                        if (counterInt <= asukohtX.size()){
                             asukohtX.remove(0);
                             asukohtY.remove(0);
->>>>>>> 18da3f290af06161f2e910e69532bf9019d95427
                         }
                     }
                 } , 0, 200);
@@ -197,7 +195,9 @@ public class UssMain extends Application {
 
             }
         }, 1000, 1000);
+
     }
+
 
 
 
@@ -207,19 +207,29 @@ public class UssMain extends Application {
             setCenter();//iga kord kui preset arv sek möödas, siis muudab ussi asukohta ja triggerib uuesti setCenterX ja Y
             y= y-10;
             asukohtX.add(x);
-            asukohtY.add(y-10);
+            asukohtY.add(y+10);
             if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
                 counterInt++;//suurenda skoori
                 makenomnom();
+                if(ussilylid < counterInt) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            ussike[counterInt] = new Circle(asukohtX.get(counterInt - 1), asukohtY.get(counterInt - 1), 5, Color.GREEN);
+                            rootPane.getChildren().add(ussike[counterInt]);
+                        }
+                    });
+                    ussilylid++;
+                }
             }
-            if(y<=35){//kui lähed alast välja
+            if(y<=40){//kui lähed alast välja
                 gameOverJEE();
             }
         }
         if(left){
             setCenter();
             x=x-10;
-            asukohtX.add(x-10);
+            asukohtX.add(x+10);
             asukohtY.add(y);
             if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){
                 counterInt++;
@@ -232,13 +242,13 @@ public class UssMain extends Application {
         if(right){
             setCenter();
             x=x+10;
-            asukohtX.add(x+10);
+            asukohtX.add(x-10);
             asukohtY.add(y);
             if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
             }
-            if(x>=495){
+            if(x>=490){
                 gameOverJEE();
             }
 
@@ -248,13 +258,12 @@ public class UssMain extends Application {
             setCenter();
             y=y+10;
             asukohtX.add(x);
-            asukohtY.add(y+10);
+            asukohtY.add(y-10);
             if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){
                 counterInt++;
                 makenomnom();
-                ussiSaba();
             }
-            if(y>=495){
+            if(y>=490){
                 gameOverJEE();
             }
         }
@@ -274,6 +283,7 @@ public class UssMain extends Application {
     private void setCenter(){//lühendada koodi
         ussike[0].setCenterX(x);
         ussike[0].setCenterY(y);
+        whilecounter = 0;
     }
     private void gameOverJEE(){//lühendada koodi
         gameOver.setFont(Font.font(30));//gameover yeee
@@ -286,6 +296,7 @@ public class UssMain extends Application {
         left = false;
     }
     private final void ussiSaba(){
-       
+
+
     }
 }
