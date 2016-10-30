@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b6e155-d551-413f-afdb-19df72625172" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Ussimang/UssMain$1.class" afterPath="$PROJECT_DIR$/out/production/Ussimang/UssMain$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Ussimang/UssMain.class" afterPath="$PROJECT_DIR$/out/production/Ussimang/UssMain.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UssMain.java" afterPath="$PROJECT_DIR$/src/UssMain.java" />
     </list>
     <ignored path="Ussimang.iws" />
@@ -29,8 +26,8 @@
       <file leaf-file-name="UssMain.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UssMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="220" column="50" selection-start-line="220" selection-start-column="50" selection-end-line="220" selection-end-column="50" />
+            <state relative-caret-position="408">
+              <caret line="207" column="13" selection-start-line="207" selection-start-column="13" selection-end-line="207" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -44,7 +41,6 @@
             <state relative-caret-position="1980">
               <caret line="122" column="2" selection-start-line="122" selection-start-column="2" selection-end-line="122" selection-end-column="2" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <marker date="1477727483258" expanded="false" signature="925:936" ph=" { " />
                 <marker date="1477727483258" expanded="false" signature="949:955" ph=" }" />
               </folding>
@@ -538,7 +534,6 @@
         <state relative-caret-position="1980">
           <caret line="122" column="2" selection-start-line="122" selection-start-column="2" selection-end-line="122" selection-end-column="2" />
           <folding>
-            <element signature="imports" expanded="true" />
             <marker date="1477727483258" expanded="false" signature="925:936" ph=" { " />
             <marker date="1477727483258" expanded="false" signature="949:955" ph=" }" />
           </folding>
@@ -568,7 +563,6 @@
         <state relative-caret-position="1980">
           <caret line="122" column="2" selection-start-line="122" selection-start-column="2" selection-end-line="122" selection-end-column="2" />
           <folding>
-            <element signature="imports" expanded="true" />
             <marker date="1477727483258" expanded="false" signature="925:936" ph=" { " />
             <marker date="1477727483258" expanded="false" signature="949:955" ph=" }" />
           </folding>
@@ -598,7 +592,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <marker date="1477727483258" expanded="false" signature="925:936" ph=" { " />
             <marker date="1477727483258" expanded="false" signature="949:955" ph=" }" />
           </folding>
@@ -643,7 +636,6 @@
         <state relative-caret-position="1980">
           <caret line="122" column="2" selection-start-line="122" selection-start-column="2" selection-end-line="122" selection-end-column="2" />
           <folding>
-            <element signature="imports" expanded="true" />
             <marker date="1477727483258" expanded="false" signature="925:936" ph=" { " />
             <marker date="1477727483258" expanded="false" signature="949:955" ph=" }" />
           </folding>
@@ -654,13 +646,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UssMain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="220" column="50" selection-start-line="220" selection-start-column="50" selection-end-line="220" selection-end-column="50" />
+        <state relative-caret-position="408">
+          <caret line="207" column="13" selection-start-line="207" selection-start-column="13" selection-end-line="207" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
