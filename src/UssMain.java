@@ -1,5 +1,4 @@
 import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -9,8 +8,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.Timer;
 import java.sql.*;
@@ -179,9 +176,7 @@ public class UssMain extends Application {
                 }
             }
     };
-
     aeg.start();
-
     }
 
 
@@ -238,6 +233,9 @@ public class UssMain extends Application {
             ussike[ussilylid].setCenterX(asukohtX.get(counterInt - ussilylid));
             ussike[ussilylid].setCenterY(asukohtY.get(counterInt - ussilylid));
             ussilylid++;
+            if(ussike[0].getCenterX() == ussike[ussilylid+1].getCenterX() || ussike[0].getCenterY() == ussike[ussilylid+1].getCenterY()){
+                gameOverJEE();
+            }
         }
         ussilylid = 1;
 
@@ -245,7 +243,7 @@ public class UssMain extends Application {
     }
 
 
-    private void gameOverJEE(){//lühendada koodi
+    public void gameOverJEE(){//lühendada koodi
         gameOver.setFont(Font.font(30));//gameover yeee
         aeg.stop();//mäng läbi, enam pole animatsiooni
     }
