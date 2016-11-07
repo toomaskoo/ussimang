@@ -111,54 +111,6 @@ public class UssMain extends Application {
         ussike[0].requestFocus();//kontrolli ussi
 
         // jälgib nuppude liigutusi
-        ussike[0].setOnKeyPressed(
-                e -> {
-                    if (up) {
-                        switch (e.getCode()) {//kui liigub üles, siis saab pöörata ainult paremale ja vasakule
-                            case LEFT:
-                                allDirectionsFalse();
-                                left = true;
-                                break;
-                            case RIGHT:
-                                allDirectionsFalse();
-                                right = true;
-                        }
-                    }
-                    if (down) {
-                        switch (e.getCode()) {//kui liigub alla siis saab pöörata ainult paremale ja vasakule
-                            case LEFT:
-                                allDirectionsFalse();
-                                left = true;
-                                break;
-                            case RIGHT:
-                                allDirectionsFalse();
-                                right = true;
-                        }
-                    }
-                    if (right) {
-                        switch (e.getCode()) {//kui liigub paremale, siis saab pöörata üles ja alla
-                            case UP:
-                                allDirectionsFalse();
-                                up = true;
-                                break;
-                            case DOWN:
-                                allDirectionsFalse();
-                                down = true;
-                        }
-                    }
-                    if (left) {
-                        switch (e.getCode()) {//kui liigub vasakule, siis saab pöörata üles ja alla
-                            case UP:
-                                allDirectionsFalse();
-                                up = true;
-                                break;
-                            case DOWN:
-                                allDirectionsFalse();
-                                down = true;
-                        }
-                    }
-                }
-        );
 
         aeg = new AnimationTimer(){
             @Override
@@ -182,89 +134,11 @@ public class UssMain extends Application {
 
 
 
-    private void ussikeliigub(){//kõik mida ussike peab tegema kui ta liigub mingis suunas
-
-        if(up){//ussike liigub üles
-            y= y-10;
-            ussiSaba();
-            if(y<=40){//kui lähed alast välja
-                gameOverJEE();
-            }
-        }
-        if(left){
-            x=x-10;
-            ussiSaba();
-            if(x<=10){
-                gameOverJEE();
-            }
-        }
-        if(right){
-
-            x=x+10;
-            ussiSaba();
-            if(x>=490){
-                gameOverJEE();
-            }
-        }
-        if(down){
-            y=y+10;
-            ussiSaba();
-            if(y>=490){
-                gameOverJEE();
-            }
-        }
-    }
-    private void makenomnom(){//lühendada koodi
-        nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);//niimoodi kalkuleerib arvu vahemikus 10-500
-        nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);//niimoodi kalkuleerib arvu vahemikus 10-500
-        while (nomX >=490 || nomX <= 10) {//jälgib, et arv jääks mänguruumi alasse
-            nomX = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
-        }
-        while(nomY >=490 || nomY <= 50) {//jälgib, et arv jääks mänguruumi alasse
-            nomY = (int) ((Math.round(((Math.random() * 500) + 5)) / 10) * 10);
-        }
-        nomnom.setCenterX(nomX);//võta nomnomile uus nomX
-        nomnom.setCenterY(nomY);//võta nomnomile uus nomY
-    }
-    private void setCenter(){//lühendada koodi
-        ussike[0].setCenterX(x);
-        ussike[0].setCenterY(y);
-        while (ussilylid <= counterInt) {
-            ussike[ussilylid].setCenterX(asukohtX.get(counterInt - ussilylid));
-            ussike[ussilylid].setCenterY(asukohtY.get(counterInt - ussilylid));
-            ussilylid++;
-            if(ussike[0].getCenterX() == ussike[ussilylid+1].getCenterX() || ussike[0].getCenterY() == ussike[ussilylid+1].getCenterY()){
-                gameOverJEE();
-            }
-        }
-        ussilylid = 1;
-
-
-    }
 
 
     public void gameOverJEE(){//lühendada koodi
         gameOver.setFont(Font.font(30));//gameover yeee
         aeg.stop();//mäng läbi, enam pole animatsiooni
     }
-    private void allDirectionsFalse(){//ükskõik mis noolt vajutada, kõigepealt paneb kõik falseks ja kohe peale seda muudab ühe suuna trueks
-        up = false;
-        down = false;
-        right = false;
-        left = false;
-    }
-    private final void ussiSaba(){
-        asukohtX.add(x);
-        asukohtY.add(y);
-        if(ussike[0].getCenterX() == nomX && ussike[0].getCenterY() == nomY){//kui ussike läheb samale asukohale kus on nomnom, siis tee järgmist
-            counterInt++;//suurenda skoori
-            makenomnom();
-            asukohtX.add(x);
-            asukohtY.add(y);
-            ussike[counterInt] = new Circle(asukohtX.get(counterInt-1), asukohtY.get(counterInt-1), 5, Color.GREEN);
-            rootPane.getChildren().add(ussike[counterInt]);
-        }
-        setCenter();
 
-    }
 }
